@@ -1,0 +1,13 @@
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    service: odoo-server
+  name: odoo-service
+spec:
+  ports:
+  - port: 8069
+    name: odoo-server
+    protocol: TCP
+  selector:
+    app: odoo-server

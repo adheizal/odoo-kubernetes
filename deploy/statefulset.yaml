@@ -1,0 +1,46 @@
+# Source: victoria-metrics-cluster/templates/vmstorage-statefulset.yaml
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  labels:
+    app: odoo-server
+  name: odoo-server
+  namespace: victoria-metric
+spec:
+  serviceName: odoo-server
+  selector:
+    matchLabels:
+      app: odoo-server
+  replicas: 1
+  podManagementPolicy: OrderedReady
+  template:
+    metadata:
+      labels:
+        app: odoo-server
+    spec:
+      containers:
+        - name: odoo-server
+          image: "odoo:12"
+          imagePullPolicy: "IfNotPresent"
+          ports:
+            - name: odoo
+              containerPort: 8069
+          volumeMounts:
+            - name: config-volume
+              mountPath: /etc/odoo/
+            - name: odoo-data
+              mountPath: /mnt/extra-addons
+      volumes:
+      - name: config-volume
+        configMap:
+          name: odoo-conf
+  volumeClaimTemplates:
+    - metadata:
+        name: odoo-data
+      spec:
+        accessModes:
+          - ReadWriteOnce
+        resources:
+          requests:
+            storage: "10Gi"
+        storageClassName: "nfs-data"

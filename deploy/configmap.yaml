@@ -1,0 +1,15 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: odoo-conf
+  labels:
+    name: odoo-conf
+data:
+  odoo.conf: |
+    [options]
+    admin_passwd = strong_admin_password
+    db_host = 10.10.1.200
+    db_user = odoo_testing
+    db_password = 2wsS5cZjXJ83KH
+    db_port = 5432
+    addons_path = /mnt/extra-addons
